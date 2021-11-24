@@ -9,8 +9,8 @@ PORT = 5000
 
 # An IPv4 address is obtained
 # for the server.
-# SERVER = socket.gethostbyname(socket.gethostname())
-SERVER = "127.0.0.1"
+SERVER = socket.gethostbyname(socket.gethostname())
+# SERVER = "127.0.0.1"
 # Address is stored as a tuple
 ADDRESS = (SERVER, PORT)
 
@@ -114,7 +114,7 @@ def closeSocket(conn, index):
     clients.pop(index)
     names.pop(index)
     conn.close()
-    
+
 # call the method to
 # begin the communication
 startChat()

@@ -11,7 +11,7 @@ import sys
 # from chat import *
 
 PORT = 5000
-SERVER = "127.0.0.1"
+SERVER = "192.168.56.1"
 ADDRESS = (SERVER, PORT)
 FORMAT = "utf-8"
 
