@@ -71,7 +71,7 @@ class GUI:
                                font = "Helvetica 10")
          
         self.labelName.place(relheight = 0.1,
-                             relx = 0.1,
+                             relx = 0.15,
                              rely = 0.4)
          
         # create a entry box for typing the message
@@ -80,16 +80,16 @@ class GUI:
          
         self.entryName.place(relwidth = 0.2,
                              relheight = 0.1,
-                             relx = 0.3,
+                             relx = 0.35,
                              rely = 0.4)
         # Begin IP Field Creation
         self.ipLabel = Label(self.login,
-                               text = "IP Address: ",
+                               text = "Server\nIP Address: ",
                                font = "Helvetica 10")
          
         self.ipLabel.place(relheight = 0.1,
                              relx = 0.1,
-                             rely = 0.52)
+                             rely = 0.54)
          
         # create a entry box for typing the message
         self.ipEntry = Entry(self.login,
@@ -97,17 +97,17 @@ class GUI:
          
         self.ipEntry.place(relwidth = 0.2,
                              relheight = 0.07,
-                             relx = 0.3,
-                             rely = 0.52)
+                             relx = 0.35,
+                             rely = 0.55)
         # End IP Field Creation
         # Begin Port Field Creation
         self.portLabel = Label(self.login,
-                               text = "Port Number: ",
+                               text = "Server\nPort Number: ",
                                font = "Helvetica 10")
          
         self.portLabel.place(relheight = 0.1,
                              relx = 0.1,
-                             rely = 0.63)
+                             rely = 0.65)
          
         # create a entry box for typing the message
         self.portEntry = Entry(self.login,
@@ -115,8 +115,8 @@ class GUI:
          
         self.portEntry.place(relwidth = 0.2,
                              relheight = 0.07,
-                             relx = 0.3,
-                             rely = 0.63)
+                             relx = 0.35,
+                             rely = 0.68)
 
         # End Port Field Creation
         # set the focus of the cursor
@@ -310,7 +310,7 @@ class GUI:
     # The main layout of the chat
     def layout(self,name):
        
-        self.name = name + "@" + str(socket.gethostbyname(socket.gethostname()))
+        self.name = name
         # handle window closing
         def on_closing():
             client.close()
