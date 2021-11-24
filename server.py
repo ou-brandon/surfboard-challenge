@@ -110,6 +110,7 @@ def broadcastMessage(message):
             closeSocket(client, index)
             break
 
+# Closes the socket if there is a disconnection
 def closeSocket(conn, index):
     clients.pop(index)
     names.pop(index)

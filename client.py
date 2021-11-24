@@ -3,28 +3,27 @@ import socket
 import threading
 from tkinter import *
 import sys
- 
-# import all functions /
-#  everything from chat.py file
-#from chat import *
- 
-PORT = 5000
+
+# Information needed for connections
+
+# Will add functionality to ask for the port and IP address of the server
+PORT = 5000 
 SERVER = "192.168.56.1"
 ADDRESS = (SERVER, PORT)
 FORMAT = "utf-8"
- 
+
 # Create a new client socket
 # and connect to the server
 client = socket.socket(socket.AF_INET,
                       socket.SOCK_STREAM)
 client.connect(ADDRESS)
- 
- 
+
+
 # GUI class for the chat
 class GUI:
     # constructor method
     def __init__(self):
-       
+        
         # chat window which is currently hidden
         self.Window = Tk()
         self.Window.withdraw()
@@ -44,7 +43,7 @@ class GUI:
         self.login.configure(width = 400,
                              height = 300)
 
-        # create checbutton
+        # create check button for checking if someone is presenting
         self.checkVar = IntVar()
         self.checkButton = Checkbutton(self.login, 
                              text = "Are you presenter?",
@@ -58,7 +57,8 @@ class GUI:
         self.checkButton.place(relheight = 0.2,
                              relx = 0.1,
                              rely = 0.08)  
-        # create a Label
+
+        # create a Label for the login prompt
         self.pls = Label(self.login,
                        text = "Please login to continue",
                        justify = LEFT,
@@ -80,8 +80,7 @@ class GUI:
                              relx = 0.1,
                              rely = 0.4)
          
-        # create a entry box for
-        # typing the message
+        # create a entry box for typing the message
         self.entryName = Entry(self.login,
                              font = "Helvetica 10")
          
@@ -92,25 +91,31 @@ class GUI:
          
         # set the focus of the cursor
         self.entryName.focus()
-         
-        # create a Continue Button
-        # along with action
+        
+        # create a continue button to proceed to the main screen
         self.go = Button(self.login,
                          text = "Continue",
                          font = "Helvetica 10 bold",
                          command = lambda: self.goAhead(self.entryName.get(), self.checkVar.get()))
-         
+        
         self.go.place(relx = 0.1,
                       rely = 0.6)
         self.Window.mainloop()
- 
+
+    # Checks if the user is presenting
+    # If they are a presenter, they will receive two (1, 2) windows
+    # 1 is for the group chat box and a shared agenda
+    # 2 is only for presenters and allows them to edit the agenda and send the updated agenda to all users
     def goAhead(self, name, acheckvar):
         
+        # Checks if the user is a presenter
         if acheckvar == 1:
             self.presenter = True
 
+        # Remove login screen
         self.login.destroy()
 
+        # Invokes a method that generates the agenda-creating window
         if self.presenter:
             self.topic()
 
@@ -120,6 +125,7 @@ class GUI:
         rcv = threading.Thread(target=self.receive)
         rcv.start()
     
+    # Generates the agenda-creating window
     def topic (self):
         self.topic = Toplevel()
         # set the title
@@ -173,8 +179,8 @@ class GUI:
                              relx = 0.5,
                              rely = 0.3)
         # End Description Entry 
-        # create estimated time
-        
+        # create estimated time label and entry widgets
+        # Label for estimated time
         self.topic_time_label = Label(self.topic,
                        text = "Estimated Time",
                        justify = LEFT,
@@ -184,7 +190,7 @@ class GUI:
         self.topic_time_label.place(relheight = 0.1,
                        relx = 0.1,
                        rely = 0.55)
-
+        
         # create a entry box for typing the message
         self.topic_time_entry = Entry(self.topic,
                              font = "Helvetica 12",
@@ -194,9 +200,11 @@ class GUI:
                              relheight = 0.12,
                              relx = 0.5,
                              rely = 0.55)
+        # end estimated time creation
 
-        # create a Add, Edit, Delete Buttons
-
+        # create the Add, Edit, and Delete Buttons
+        # These modify the agenda
+        # The Add the Edit buttons invoke the same method to update the agenda
         self.add = Button(self.topic,
                          text = "Add",
                          font = "Helvetica 12 bold",
@@ -220,6 +228,8 @@ class GUI:
           
         self.delete.place(relx = 0.5, rely = 0.75)
 
+        # Resend button lets the presenter resend the agenda to new members joining the meeting
+        # or if they do not have the updated agenda
         self.resend = Button(self.topic,
                          text = "Resend",
                          font = "Helvetica 12 bold",
@@ -228,25 +238,32 @@ class GUI:
         self.resend.place(relx = 0.75,
                       rely = 0.75)
 
+    # Updates the agenda for everyone
     def updateAgenda(self):
         message = ""
+        
+        # Loops through all the current topics in the agenda
         for k, task in self.topics.items():
             #print(sub_dict)
             message += ("Title: " + task[0] + "\nDescription: " + task[1] + "\nEst. Time: " + task[2] + "\n------------------------\n")   
+        
+        # Adding ***AGENDA*** allows one to figure out if the message should be added to the agenda or chat box
         self.msg="***AGENDA***" + message + "***AGENDA***"
         snd= threading.Thread(target = self.sendMessage)
         snd.start()
 
+    # Adds/Edits the topic with title, which is what the variable title is
     def goAdd_Edit(self, title, description, time):
         self.topics[title] = [title, description, time]
         self.updateAgenda()
 
+    # Deletes the topic with the same title as atitle
     def goDelete(self, atitle):
         self.topics.pop(atitle)
         self.updateAgenda()
 
-
     # end of topic
+
     # The main layout of the chat
     def layout(self,name):
        
@@ -255,10 +272,11 @@ class GUI:
         def on_closing():
             client.close()
             sys.exit()
-        self.Window.protocol("WM_DELETE_WINDOW", on_closing)
+
+        self.Window.protocol("WM_DELETE_WINDOW", on_closing) 
         # to show chat window
         self.Window.deiconify()
-        self.Window.title("CHATROOM")
+        self.Window.title("Chat Room")
         self.Window.resizable(width = True, height = True)
         self.Window.configure(width = 470, height = 550, bg = "#17202A")
         self.labelHead = Label(self.Window, bg = "#17202A", fg = "#EAECEE",  text = "Meeting Agenda" , font = "Helvetica 13 bold", pady = 5)
@@ -267,7 +285,7 @@ class GUI:
         self.line = Label(self.Window, width = 450, bg = "#ABB2B9")
          
         self.line.place(relwidth = 1, rely = 0.07, relheight = 0.012)
-        # add agenda
+        # Agenda Text box
         self.textAgenda = Text(self.Window,
                              width = 30,
                              height = 5,
@@ -276,11 +294,12 @@ class GUI:
                              font = "Helvetica 14",
                              padx = 5,
                              pady = 5)
-         
+        
         self.textAgenda.place(relheight = 0.3,
                             relwidth = 1,
                             rely = 0.08)
-         
+        
+        # Labels the chat box
         self.labelBottomA = Label(self.Window,
                                  bg = "#17202A",
                                  fg = "#EAECEE",
@@ -290,25 +309,25 @@ class GUI:
          
         self.labelBottomA.place(relwidth = 1,
                                rely = 0.41)
-         
+        # Extra line for aesthetic purpoess
         self.line2 = Label(self.Window, width = 450, bg = "#ABB2B9")
         self.line2.place(relwidth = 1, rely = 0.49, relheight = 0.012)
         # create a Update Button
 
-        # create a scroll bar
+        # create a scroll bar for the agenda
+        # place the scroll bar into the gui window
         self.agendaScrollbar = Scrollbar(self.textAgenda)
          
-        # place the scroll bar
-        # into the gui window
+
         self.agendaScrollbar.place(relheight = 1,
                         relx = 0.974)
-         
+        
         self.agendaScrollbar.config(command = self.textAgenda.yview)
         self.textAgenda.config(yscrollcommand=self.agendaScrollbar.set)
 
         self.textAgenda.config(state = DISABLED)    
-        # end 
-    
+        
+        # Text console for all users
         self.textCons = Text(self.Window,
                              width = 20,
                              height = 2,
@@ -329,6 +348,7 @@ class GUI:
         self.labelBottom.place(relwidth = 1,
                                rely = 0.825)
         
+        # Allows users to input chat messages
         self.entryMsg = Entry(self.labelBottom,
                               bg = "#2C3E50",
                               fg = "#EAECEE",
@@ -350,7 +370,7 @@ class GUI:
                                 width = 20,
                                 bg = "#ABB2B9",
                                 command = lambda : self.sendButton(self.entryMsg.get()))
-         
+        
         self.buttonMsg.place(relx = 0.7,
                              rely = 0.008,
                              relheight = 0.06,
@@ -371,7 +391,7 @@ class GUI:
         self.textCons.config(yscrollcommand=self.chatScrollbar.set)
         self.textCons.config(state = DISABLED)
  
-    # function to basically start the thread for sending messages
+    # Function for the send button
     def sendButton(self, msg):
         self.textCons.config(state = DISABLED)
         self.msg=msg
@@ -381,8 +401,8 @@ class GUI:
  
 
 
-    # function to receive messages
-
+    # Function to receive messages
+    # Handles several possible errors such as disconnecting from the server
     def receive(self):
         while True:
             try:
@@ -421,7 +441,7 @@ class GUI:
                 client.close()
                 break
          
-    # function to send messages
+    # Function to send messages
     def sendMessage(self):
         # self.textCons.config(state=DISABLED)
         while True:
