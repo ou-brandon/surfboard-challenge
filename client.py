@@ -142,6 +142,7 @@ class GUI:
         if acheckvar == 1:
             self.presenter = True
         
+        # Connect to the server
         global client
         SERVER = self.ipEntry.get()
         PORT = int(self.portEntry.get())
@@ -153,7 +154,7 @@ class GUI:
         except:
             print("An error occurred")
             sys.exit(0)
-        
+
         # Remove login screen
         self.login.destroy()
 
