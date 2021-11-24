@@ -7,11 +7,17 @@ import sys
 # Information needed for connections
 
 # Will add functionality to ask for the port and IP address of the server
-
+PORT = 5000 
+SERVER = "192.168.56.1"
+ADDRESS = (SERVER, PORT)
 FORMAT = "utf-8"
 
-# Initialize client -> this will be formally set during the constructor
-client = 0
+# Create a new client socket
+# and connect to the server
+client = socket.socket(socket.AF_INET,
+                      socket.SOCK_STREAM)
+client.connect(ADDRESS)
+
 
 # GUI class for the chat
 class GUI:
@@ -141,18 +147,6 @@ class GUI:
         # Checks if the user is a presenter
         if acheckvar == 1:
             self.presenter = True
-        
-        global client
-        SERVER = self.ipEntry.get()
-        PORT = int(self.portEntry.get())
-        ADDRESS = (SERVER, PORT)
-        try:
-            client = socket.socket(socket.AF_INET,
-                        socket.SOCK_STREAM)
-            client.connect(ADDRESS)
-        except:
-            print("An error occurred")
-            sys.exit(0)
         
         # Remove login screen
         self.login.destroy()
