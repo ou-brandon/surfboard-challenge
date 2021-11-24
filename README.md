@@ -16,4 +16,3 @@ Code was used from the following site:
 Because of the duration of this project, some features could not be implemented. Some improvements for later include:
 - User customization (background pictures, font sizes, etc.)
 - Shared Agenda among presenters (For now, presenters have unique task lists)
-- Ask for server IP and port from each client (For now, only one specific server and port was used)
