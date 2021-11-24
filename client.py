@@ -46,7 +46,7 @@ class GUI:
         # create check button for checking if someone is presenting
         self.checkVar = IntVar()
         self.checkButton = Checkbutton(self.login, 
-                             text = "Are you presenter?",
+                             text = "Are you presenting?",
                              font = "Helvetica 12 bold",
                              variable = self.checkVar, 
                              onvalue = 1, 
