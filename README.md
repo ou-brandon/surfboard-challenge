@@ -1,6 +1,6 @@
 # surfboard-challenge
 
-This project should allow clients to communicate in an environment with a group chat as well as a shared agenda. 
+This project should allow clients to communicate in an environment with a group chat and a shared agenda. 
 
 To run this code:
 1. Run server.py on one machine to establish an IP address for the server.
