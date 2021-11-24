@@ -5,11 +5,11 @@ import socket
 import threading
 
 # Choose a port that is free
-PORT = 5000
-
+PORT = int(input("Input the port number: "))
 # An IPv4 address is obtained
 # for the server.
 SERVER = socket.gethostbyname(socket.gethostname())
+# PORT = socket.getsockname()
 # SERVER = "127.0.0.1"
 # Address is stored as a tuple
 ADDRESS = (SERVER, PORT)
@@ -35,6 +35,7 @@ server.bind(ADDRESS)
 
 # function to start the connection
 def startChat():
+    # print(str(SERVER) + "     " + str(PORT))
     print("server is working on " + SERVER)
 
     # listening for connections
