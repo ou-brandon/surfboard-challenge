@@ -33,20 +33,7 @@ def on_closing(event=None):
     my_msg.set("{quit}")
     send()
 
-top = tk.Tk()
-top.title("Chat On!")
 
-messages_frame = tk.Frame(top)
-messages_frame.place(relx=.7, rely=.2)
-my_msg = tk.StringVar()  # For the messages to be sent.
-my_msg.set("")
-scrollbar = tk.Scrollbar(messages_frame)  # To see through previous messages.
-# this will contain the messages.
-msg_list = tk.Listbox(messages_frame, height=15, width=50, yscrollcommand=scrollbar.set)
-scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
-msg_list.pack(side=tk.LEFT, fill=tk.BOTH)
-msg_list.pack()
-messages_frame.pack()
 #
 # https://cppsecrets.com/users/218111411511410110199104971141051161049764103109971051084699111109/Python-Tkinter-To-do-List.php
 
@@ -113,6 +100,20 @@ def retrieveDB():
 
 
 # ------------------------------- Functions--------------------------------
+top = tk.Tk()
+top.title("Meeting")
+
+messages_frame = tk.Frame(top)
+my_msg = tk.StringVar()  # For the messages to be sent.
+my_msg.set("")
+scrollbar = tk.Scrollbar(messages_frame)  # To see through previous messages.
+# this will contain the messages.
+msg_list = tk.Listbox(messages_frame, height=20, width=80, yscrollcommand=scrollbar.set)
+scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+# msg_list.pack(side=tk.RIGHT, fill=tk.Y)
+#msg_list.place(relx=.7, rely=.2)
+msg_list.pack()
+messages_frame.pack()
 
 l1 = ttk.Label(top, text='To-Do List')
 l2 = ttk.Label(top, text='Enter task title: ')
@@ -135,7 +136,7 @@ b3.place(x=50, y=170)
 b4.place(x=50, y=200)
 l1.place(x=50, y=10)
 t.place(x=220, y=50)
-top.mainloop()
+# top.mainloop()
 
 conn.commit()
 cur.close()
@@ -150,7 +151,8 @@ send_button.pack()
 top.protocol("WM_DELETE_WINDOW", on_closing)
 
 #Socket part
-HOST = input('Enter host: ') # Enter host of the server without inverted commas 
+#HOST = input('Enter host: ') # Enter host of the server without inverted commas
+HOST = "192.168.1.155"
 PORT = 33000
 BUFSIZ = 1024
 ADDR = (HOST, PORT)
